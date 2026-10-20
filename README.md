@@ -144,22 +144,28 @@ Measured on the M-series workstation, 1920×1080 PNG capture:
 
 60 fps is chosen. The road moves at 314 units/s (≈339 px/s at zoom 1), so a
 30 fps cut jumps ≈11 px per frame; 60 fps halves that to ≈5.6 px and keeps the
-push-in edges smooth. The full 8,220-frame export took 787.7 s (10.4 fps,
-96 ms/frame) with four workers and produced ≈21 GB of intermediate PNGs; 30 fps
+push-in edges smooth. The full 8,220-frame export took 782.4 s (10.5 fps,
+95 ms/frame) with four workers and produced ≈21 GB of intermediate PNGs; 30 fps
 would halve both. Retro scenes still quantise their own animation to 8–12 Hz.
 
-## Phase 1 demo artifacts (local, gitignored)
+## Phase 2 demo artifacts (local, gitignored)
 
 | file | what |
 |---|---|
-| `out/pelican_test.mp4` | silent 137.0 s, 1920×1080, 60 fps, H.264, 51 MiB |
+| `out/pelican_test.mp4` | silent 137.0 s, 1920×1080, 60 fps, H.264, 51.4 MiB |
+| `out/phase2-sheet.png` | 8 checkpoints across the three finished eras + outro |
 | `out/scenes-sheet.png` | 23 checkpoints: intro + all 20 eras + outro wide/pushed |
 | `out/contact-sheet.png` | 20 evenly spaced frames across the film |
+| `out/stills/` | full-size stills: Sahara, Song wide/close, vertical video |
 | `out/fps-test/pan_30fps.mp4`, `pan_60fps.mp4` | the camera-pan comparison |
 
 MP4 SHA-256:
-`e18803d31ed06f42e1fcd4ab2bcc2d4d5902c1b9e5d4fa6bc3bbe559643c86a9`.
-The encode took 105.96 s at CRF 18 / preset slow.
+`723a3c32d16175b4c4c39ac92ae0ac6dec3cd8c9c7967d7e0166e562f2658a79`.
+The encode took 106.5 s at CRF 18 / preset slow.
+
+Song landscape is deliberately a **graphic ink interpretation** — layered cliff,
+one stone edge in mist, colophon — not a literal reconstruction of
+*溪山行旅图*. A brush-level fidelity pass remains optional.
 
 ## Licensing
 
