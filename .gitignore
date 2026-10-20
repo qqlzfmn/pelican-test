@@ -1,0 +1,7 @@
+node_modules/
+frames/
+out/
+audio/*.wav
+audio/*.mp3
+.DS_Store
+*.log

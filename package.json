@@ -1,0 +1,22 @@
+{
+  "name": "pelican-test",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "《鹈鹕测试》— a procedural short about a pelican riding a bicycle through 20 art styles.",
+  "scripts": {
+    "dev": "node tools/serve.mjs --open",
+    "serve": "node tools/serve.mjs",
+    "shot": "node tools/shot.mjs",
+    "sheet": "node tools/sheet.mjs",
+    "render": "node tools/render.mjs",
+    "encode": "bash tools/encode.sh",
+    "test": "node --test tests/*.test.js"
+  },
+  "dependencies": {
+    "p5": "2.3.4"
+  },
+  "devDependencies": {
+    "puppeteer": "25.15.0"
+  }
+}
