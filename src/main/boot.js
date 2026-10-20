@@ -172,10 +172,13 @@ window.addEventListener('keydown', (e) => {
 });
 
 // Deterministic export hook. Called by tools/shot.mjs and tools/render.mjs.
+// p5.redraw() schedules work on the next animation frame, so export must call
+// the director directly: the canvas is complete when this returns.
 window.__renderAt = (t) => {
   clock.playing = false;
   cancelAnimationFrame(clock.raf);
-  drawAt(t);
+  clock.t = clamp(t, 0, DURATION);
+  director.renderAt(clock.t);
   return true;
 };
 

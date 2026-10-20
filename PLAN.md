@@ -20,10 +20,14 @@ produces a watchable MP4; contact sheet shows all 20 labelled blocks.
 
 ## Phase 2 — three finished eras
 
-Rebuild Sahara rock art, Song landscape and vertical video as finished painters:
-substrate, composition, figures, era-specific rendering, gag, title card, and
-8–12 Hz time quantisation for the vertical UI. These three establish the quality
-bar and the shared ink/paper techniques.
+- [x] Sahara: procedural sandstone, hand stencils, older painted procession,
+      ochre herd and herders, custom rock rider, painted title panel.
+- [x] Song: layered cliff and mid-ridge, pines, narrow stone ledge in mist,
+      colophon title, camera push from wide to rider. This is a deliberately
+      graphic ink interpretation; a further brush-fidelity pass is optional.
+- [x] Vertical video: 9:16 phone in the 1920×1080 frame, fictional app, 10 Hz UI,
+      comments/hearts, progress bar that completes at the cut.
+- [x] Scene-level `camera` and `titleCard` hooks; cached 1.2 px/unit art layers.
 
 Demo: three 6-second clips at 100% and a contact sheet, plus timing per frame.
 

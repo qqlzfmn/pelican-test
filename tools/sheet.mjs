@@ -20,6 +20,7 @@ const out = get('out', 'out/contact-sheet.png');
 const custom = get('times', '');
 const perScene = args.includes('--scenes');
 const cols = Number(get('cols', 5));
+const label = get('label', 'phase 2 · three finished eras');
 
 const times = custom
   ? custom.split(',').map(Number)
@@ -78,7 +79,7 @@ try {
 <body>
   <header>
     <h1><span>《鹈鹕测试》</span> · CONTACT SHEET</h1>
-    <div class="meta">${timecode(times[0])} – ${timecode(times[times.length - 1])} · ${shots.length} frames · phase 1 skeleton</div>
+    <div class="meta">${timecode(times[0])} – ${timecode(times[times.length - 1])} · ${shots.length} frames · ${label}</div>
   </header>
   <main>${cards}</main>
 </body></html>`;

@@ -88,10 +88,13 @@ export class Director {
     }
   }
 
-  drawSection(g, index, t, { title = true } = {}) {
+  drawSection(g, index, t, { title = true, thumbnail = false } = {}) {
     const scene = scenes[index];
     const local = clamp(t - sectionStart(index), 0, SECTION_LEN);
-    const view = sceneCamera(g, index, t);
+    const view =
+      !thumbnail && typeof scene.camera === 'function'
+        ? scene.camera(g, local, t)
+        : sceneCamera(g, index, t);
 
     // Backstop fill; every scene also paints its own bleed.
     g.drawingContext.save();
@@ -101,7 +104,7 @@ export class Director {
 
     g.push();
     applyView(g, view);
-    scene.draw(g, this.makeCtx(g, index, t, local, view));
+    scene.draw(g, this.makeCtx(g, index, t, local, view, { thumbnail }));
     g.pop();
 
     if (title) {
@@ -109,15 +112,22 @@ export class Director {
       const aOut = 1 - smoothstep(4.85, 5.3, local);
       const opacity = aIn * aOut;
       if (opacity > 0.001) {
-        drawTitleCard(g, scene, {
+        const cardOpts = {
           opacity,
           lift: (1 - aIn) * 14,
-        });
+          local,
+          t,
+        };
+        if (typeof scene.titleCard === 'function') {
+          scene.titleCard(g, cardOpts);
+        } else {
+          drawTitleCard(g, scene, cardOpts);
+        }
       }
     }
   }
 
-  makeCtx(g, index, t, local, view) {
+  makeCtx(g, index, t, local, view, { thumbnail = false } = {}) {
     const scene = scenes[index];
     const palette = scene.palette;
     const style = paletteStyle(palette);
@@ -129,7 +139,9 @@ export class Director {
       index,
       scene,
       view,
+      thumbnail,
       style,
+      makeGraphics: (w, h) => this.p.createGraphics(w, h),
       road: (target, opts = {}) => drawRoad(target, t, { ...roadDefaults, ...opts }),
       rider: (target, x, opts = {}) => {
         const pose = rigPose(t + (opts.poseOffset || 0), { cadence: opts.cadence || 1 });
@@ -168,7 +180,7 @@ export class Director {
       const t = sectionStart(index) + 3.0;
       const local = 3.0;
       const view = makeView(pg, { cx: 500, cy: 500, zoom: 1 });
-      const ctx = this.makeCtx(pg, index, t, local, view);
+      const ctx = this.makeCtx(pg, index, t, local, view, { thumbnail: true });
       pg.push();
       applyView(pg, view);
       scene.draw(pg, ctx);

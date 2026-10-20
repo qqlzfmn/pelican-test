@@ -4,10 +4,10 @@ A procedural short film: a pelican rides one continuous road through twenty art
 history eras. 120 BPM, 2:17, 1920×1080. Every frame is drawn by code — no external
 images, video, or audio.
 
-**Status: phase 1 skeleton.** The full edit, timing, camera, through-frame
-transition and export pipeline are working. Twenty eras are labelled colour-block
-placeholders; Sahara, Song landscape and vertical video get real painters in
-phase 2.
+**Status: phase 2.** The full edit, timing, camera, through-frame transition and
+export pipeline are working. Three eras are finished painters — Sahara rock art,
+Song landscape and vertical video. The other seventeen remain labelled
+colour-block placeholders, each with its era palette and title card.
 
 ## Run it
 
@@ -103,10 +103,18 @@ export default {
 };
 ```
 
-`ctx` provides `t`, `local`, `view`, `road()`, `rider()`, and the era's palette
-style. Scenes run at any canvas aspect; `applyView` maps the 1000-unit-tall page
-to the target. Camera pushes happen in `src/main/camera.js`; frame crossings are
-clipped apertures in `src/main/transitions.js`.
+`ctx` provides `t`, `local`, `view`, `road()`, `rider()`, `makeGraphics()` and the
+era's palette style. Scenes run at any canvas aspect; `applyView` maps the
+1000-unit-tall page to the target. A scene may override the default camera with
+`camera(g, local, t)` (Song pushes in to find the rider) and may draw its own
+`titleCard(g, opts)` (Sahara's painted panel, Song's colophon, the vertical
+app's side-bar card). Frame crossings are clipped apertures in
+`src/main/transitions.js`.
+
+Static art is cached at 1.2 px/unit with `src/kit/cache.js`; only the rider,
+mist, water, dust and UI are redrawn each frame. The vertical-video scene works
+in screen space (it resets the transform), so its phone frame never zooms with
+the camera; the road and rider inside use a local 1000-unit transform.
 
 The pelican and bicycle are one skeleton (`src/rig/pose.js`). Every era gets the
 same joints and draws them its own way; this is what keeps the motion continuous

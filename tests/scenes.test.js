@@ -26,6 +26,8 @@ test('every era satisfies the scene contract', () => {
       assert.ok(s[key].length > 0);
     }
     assert.equal(typeof s.draw, 'function');
+    if (s.camera !== undefined) assert.equal(typeof s.camera, 'function');
+    if (s.titleCard !== undefined) assert.equal(typeof s.titleCard, 'function');
     for (const key of paletteKeys) {
       assert.match(s.palette[key], /^(#|rgb)/, `${s.id}.${key}`);
     }
