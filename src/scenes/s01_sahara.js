@@ -1167,19 +1167,19 @@ function drawRockTitle(g, opacity, lift, local) {
   const px = x - 28 * s;
   const py = baseY - 112 * s;
   const pw = 760 * s;
-  const ph = 158 * s;
+  const ph = 176 * s;
   for (let i = 0; i <= 14; i += 1) {
     const xx = px + (i / 14) * pw;
-    c.lineTo(xx, py + (rand() - 0.5) * 4 * s);
+    c.lineTo(xx, py + (rand() - 0.5) * 9 * s);
   }
   for (let i = 0; i <= 6; i += 1) {
-    c.lineTo(px + pw + (rand() - 0.5) * 5 * s, py + (i / 6) * ph);
+    c.lineTo(px + pw + (rand() - 0.5) * 11 * s, py + (i / 6) * ph);
   }
   for (let i = 14; i >= 0; i -= 1) {
-    c.lineTo(px + (i / 14) * pw, py + ph + (rand() - 0.5) * 4 * s);
+    c.lineTo(px + (i / 14) * pw, py + ph + (rand() - 0.5) * 9 * s);
   }
   for (let i = 6; i >= 0; i -= 1) {
-    c.lineTo(px + (rand() - 0.5) * 5 * s, py + (i / 6) * ph);
+    c.lineTo(px + (rand() - 0.5) * 11 * s, py + (i / 6) * ph);
   }
   c.closePath();
   c.fillStyle = 'rgba(72, 30, 15, 0.74)';
@@ -1210,9 +1210,9 @@ function drawRockTitle(g, opacity, lift, local) {
   c.fillStyle = 'rgba(246, 226, 184, 0.82)';
   c.fillText('SAHARAN ROCK ART', x, baseY + 8 * s);
 
-  setFont(c, 16 * s, 400, CN_FONT, '1px');
-  c.fillStyle = 'rgba(226, 168, 101, 0.98)';
-  c.fillText('约前4000 · 塔西里', x, baseY + 38 * s);
+  setFont(c, 15 * s, 400, CN_FONT, '1px');
+  c.fillStyle = 'rgba(246, 226, 184, 0.98)';
+  c.fillText('约前4000 · 塔西里', x, baseY + 24 * s);
 
   // A small positive handprint at the right of the panel.
   c.save();

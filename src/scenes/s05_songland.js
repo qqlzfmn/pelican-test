@@ -102,13 +102,6 @@ function drawMountain(g, c) {
     { x: -500, y: 850 },
   ], 0.12, 92);
 
-  // A mid-value ridge behind the cliff: depth without clutter.
-  fillOrganicPoly(c, [
-    { x: 360, y: 820 }, { x: 440, y: 640 }, { x: 520, y: 500 },
-    { x: 600, y: 380 }, { x: 690, y: 320 }, { x: 780, y: 430 },
-    { x: 860, y: 560 }, { x: 960, y: 820 },
-  ], 'rgba(112, 126, 116, 0.18)', 41);
-
   // Right-hand distant peak, to balance the cliff.
   fillPoly(c, [
     { x: 900, y: 820 }, { x: 960, y: 690 }, { x: 1030, y: 600 },
@@ -122,27 +115,6 @@ function drawMountain(g, c) {
   fillOrganicPoly(c, PEAK, 'rgba(102, 114, 106, 0.18)', 21);
   c.restore();
   fillOrganicPoly(c, PEAK, 'rgba(67, 84, 75, 0.9)', 22);
-
-  // Dark base, clipped to the cliff.
-  c.save();
-  c.beginPath();
-  c.moveTo(PEAK[0].x, PEAK[0].y);
-  for (let i = 1; i < PEAK.length; i += 1) c.lineTo(PEAK[i].x, PEAK[i].y);
-  c.closePath();
-  c.clip();
-  const baseGrad = c.createLinearGradient(0, 420, 0, 830);
-  baseGrad.addColorStop(0, 'rgba(33, 45, 39, 0)');
-  baseGrad.addColorStop(1, 'rgba(33, 45, 39, 0.45)');
-  c.fillStyle = baseGrad;
-  c.fillRect(-520, 400, 1240, 440);
-  c.restore();
-
-  const leftFlank = [
-    { x: -500, y: 40 }, { x: -360, y: 60 }, { x: -300, y: 180 },
-    { x: -210, y: 110 }, { x: -120, y: 260 }, { x: -30, y: 210 },
-    { x: 70, y: 350 }, { x: 120, y: 820 }, { x: -500, y: 820 },
-  ];
-  fillOrganicPoly(c, leftFlank, 'rgba(30, 44, 37, 0.46)', 23);
 
   const litEdge = [
     { x: 70, y: 350 }, { x: 150, y: 320 }, { x: 230, y: 460 },
@@ -161,24 +133,6 @@ function drawMountain(g, c) {
   for (let i = 1; i < PEAK.length; i += 1) c.lineTo(PEAK[i].x, PEAK[i].y);
   c.closePath();
   c.clip();
-  c.filter = 'blur(9px)';
-  for (let i = 0; i < 110; i += 1) {
-    const x = -470 + rand() * 1120;
-    const y = 80 + rand() * 720;
-    const rx = 18 + rand() * 90;
-    const ry = 10 + rand() * 46;
-    const dark = rand() > 0.45;
-    c.fillStyle = alpha(dark ? '#1e3129' : '#edf0e4', 0.08 + rand() * 0.12);
-    c.beginPath();
-    c.ellipse(x, y, rx, ry, rand() * 0.5 - 0.25, 0, TAU);
-    c.fill();
-  }
-  // A darker wet base.
-  const wet = c.createLinearGradient(0, 560, 0, 840);
-  wet.addColorStop(0, 'rgba(40, 53, 47, 0)');
-  wet.addColorStop(1, 'rgba(22, 36, 29, 0.46)');
-  c.fillStyle = wet;
-  c.fillRect(250, 540, 780, 300);
   c.filter = 'none';
   c.restore();
 
@@ -310,12 +264,6 @@ function drawMountain(g, c) {
   c.closePath();
   c.fill();
 
-  // Pines on the cliff and in the right foreground.
-  drawPine(c, 0, 520, 150, 1.0);
-  drawPine(c, 145, 400, 125, 0.9);
-  drawPine(c, 265, 600, 110, 0.85);
-  drawPine(c, 395, 700, 95, 0.8);
-
   // The mountain trail.
   drawTrail(c, rand);
 
@@ -378,91 +326,7 @@ function drawDistantRange(c, pts, a, seed) {
 
 
 
-function drawPine(c, x, y, h, scale) {
-  const rand = rngFor(Math.round(x * 3 + y));
-  c.save();
-  c.translate(x, y);
-  c.scale(scale, scale);
-  c.lineCap = 'round';
-  c.lineJoin = 'round';
 
-  // Leaning trunk, thick at the base.
-  c.strokeStyle = alpha(INK, 0.88);
-  c.lineWidth = 4.8;
-  c.beginPath();
-  c.moveTo(0, 0);
-  c.bezierCurveTo(-8, -h * 0.3, -14, -h * 0.62, -5, -h * 0.98);
-  c.stroke();
-  c.lineWidth = 1.6;
-  c.strokeStyle = alpha(INK, 0.42);
-  c.beginPath();
-  c.moveTo(-3, -h * 0.16);
-  c.quadraticCurveTo(-9, -h * 0.42, -8, -h * 0.72);
-  c.stroke();
-
-  // Tiers of horizontal foliage, smaller with height.
-  const tiers = [0.32, 0.5, 0.66, 0.8, 0.91];
-  const widths = [0.34, 0.3, 0.24, 0.17, 0.1];
-  for (let ti = 0; ti < tiers.length; ti += 1) {
-    const ty = -h * tiers[ti];
-    const half = h * widths[ti];
-    const sides = ti === tiers.length - 1 ? [0] : [-1, 1];
-    for (const side of sides) {
-      const cx = -4 + side * half * 0.55;
-      const cy = ty - h * 0.012;
-      const bw = side === 0 ? half * 0.9 : half * 0.95;
-      // Branch.
-      c.strokeStyle = alpha(INK, 0.62);
-      c.lineWidth = 1.8;
-      c.beginPath();
-      c.moveTo(-3, ty + h * 0.04);
-      c.quadraticCurveTo(cx * 0.6, ty - h * 0.03, cx, cy);
-      c.stroke();
-
-      // Foliage mass: a flat, jagged cloud.
-      c.fillStyle = alpha(INK, 0.26);
-      c.beginPath();
-      c.moveTo(cx - bw, cy + h * 0.01);
-      c.quadraticCurveTo(cx - bw * 0.5, cy - h * 0.05, cx, cy - h * 0.04);
-      c.quadraticCurveTo(cx + bw * 0.55, cy - h * 0.055, cx + bw, cy + h * 0.005);
-      for (let k = 1; k <= 6; k += 1) {
-        c.lineTo(cx + bw - (k / 6) * bw * 2, cy + h * 0.018 + (k % 2) * h * 0.01);
-      }
-      c.closePath();
-      c.fill();
-
-      // Needle fringe.
-      c.strokeStyle = alpha(INK, 0.6);
-      c.lineWidth = 0.8;
-      for (let i = 0; i < 16; i += 1) {
-        const ox = cx + (rand() - 0.5) * bw * 2;
-        const oy = cy + h * 0.015;
-        const len = h * (0.02 + rand() * 0.025);
-        c.beginPath();
-        c.moveTo(ox, oy);
-        c.lineTo(ox + (rand() - 0.5) * 5, oy + len);
-        c.stroke();
-      }
-      // A few upward twigs.
-      c.strokeStyle = alpha(INK, 0.36);
-      for (let i = 0; i < 4; i += 1) {
-        const ox = cx + (rand() - 0.5) * bw * 1.5;
-        c.beginPath();
-        c.moveTo(ox, cy);
-        c.lineTo(ox + (rand() - 0.5) * 8, cy - h * (0.02 + rand() * 0.02));
-        c.stroke();
-      }
-      // Moss on the branch.
-      c.fillStyle = alpha(MOSS, 0.4);
-      for (let i = 0; i < 3; i += 1) {
-        c.beginPath();
-        c.arc(cx + (rand() - 0.5) * bw * 1.2, cy + h * 0.01, 0.5 + rand() * 1, 0, TAU);
-        c.fill();
-      }
-    }
-  }
-  c.restore();
-}
 
 
 
@@ -471,78 +335,64 @@ function drawPine(c, x, y, h, scale) {
 
 
 function drawTrail(c, rand) {
-  // A narrow stone ledge, floating in mist.
+  // The cliff-edge line itself is the path; the void below is paper.
+  const L = 280;
+  const R = 780;
+  c.save();
+  c.filter = 'blur(5px)';
+  c.strokeStyle = 'rgba(32, 47, 39, 0.3)';
+  c.lineWidth = 10;
   c.beginPath();
-  c.moveTo(-500, 818);
-  for (let x = -500; x <= 1500; x += 30) {
-    c.lineTo(x, 818 + noise1(x * 0.004, 7) * 4);
+  for (let x = L; x <= R; x += 30) {
+    const y = 824 + noise1(x * 0.004, 8) * 3;
+    if (x === L) c.moveTo(x, y);
+    else c.lineTo(x, y);
   }
-  for (let x = 1500; x >= -500; x -= 30) {
-    c.lineTo(x, 838 + noise1(x * 0.004, 8) * 5);
+  c.stroke();
+  c.restore();
+
+  // The ledge edge.
+  c.strokeStyle = alpha(INK, 0.62);
+  c.lineWidth = 2.2;
+  c.beginPath();
+  for (let x = L; x <= R; x += 30) {
+    const y = 820 + noise1(x * 0.004, 7) * 3;
+    if (x === L) c.moveTo(x, y);
+    else c.lineTo(x, y);
   }
-  c.closePath();
-  c.fillStyle = 'rgba(166, 168, 151, 0.72)';
-  c.fill();
-  c.strokeStyle = alpha(INK, 0.5);
-  c.lineWidth = 1.6;
   c.stroke();
 
-  // Stones along the ledge.
-  let x = -520;
-  while (x < 1520) {
-    const w = 22 + rand() * 40;
-    const y = 821 + rand() * 7;
-    const h = 8 + rand() * 6;
+  // A handful of pale stones on the edge.
+  for (let i = 0; i < 12; i += 1) {
+    const x = L + 20 + rand() * (R - L - 40);
+    const w = 10 + rand() * 24;
+    const y = 820 + rand() * 3;
+    c.fillStyle = alpha(rand() > 0.5 ? '#bdb9a4' : '#aaa894', 0.22 + rand() * 0.2);
     c.beginPath();
-    c.moveTo(x + 2, y);
-    c.lineTo(x + w - 2, y + (rand() - 0.5) * 3);
-    c.lineTo(x + w - 3, y + h);
-    c.lineTo(x + 3, y + h + (rand() - 0.5) * 2);
-    c.closePath();
-    c.fillStyle = alpha(rand() > 0.5 ? '#c7c4ae' : '#b3b19c', 0.35 + rand() * 0.2);
+    c.ellipse(x, y, w / 2, 2 + rand() * 1.5, 0, 0, TAU);
     c.fill();
-    c.strokeStyle = alpha(INK, 0.24);
-    c.lineWidth = 0.8;
-    c.stroke();
-    x += w + 4 + rand() * 8;
   }
 
-  // Dark underside and mist below.
-  const face = c.createLinearGradient(0, 838, 0, 930);
-  face.addColorStop(0, 'rgba(38, 52, 44, 0.5)');
-  face.addColorStop(0.35, 'rgba(50, 65, 56, 0.22)');
-  face.addColorStop(1, 'rgba(233, 226, 210, 0)');
-  c.fillStyle = face;
-  c.fillRect(-500, 838, 2000, 100);
-  for (let i = 0; i < 40; i += 1) {
-    const px = -480 + rand() * 1960;
-    const py = 842 + rand() * 54;
-    c.strokeStyle = alpha(INK, 0.08 + rand() * 0.12);
-    c.lineWidth = 0.8 + rand() * 1.2;
-    c.beginPath();
-    c.moveTo(px, py);
-    c.lineTo(px + (rand() - 0.5) * 12, py + 8 + rand() * 26);
-    c.stroke();
-  }
-
-  // Grass and pebbles on the ledge.
-  for (let i = 0; i < 44; i += 1) {
-    const px = -420 + rand() * 1940;
-    const py = 816 + rand() * 4;
-    c.strokeStyle = alpha(MOSS, 0.3 + rand() * 0.2);
+  // A rock at the left start and grass along the edge.
+  c.fillStyle = 'rgba(45, 60, 51, 0.72)';
+  c.beginPath();
+  c.moveTo(250, 826);
+  c.lineTo(266, 800);
+  c.lineTo(308, 806);
+  c.lineTo(324, 828);
+  c.closePath();
+  c.fill();
+  for (let i = 0; i < 18; i += 1) {
+    const px = L + 10 + rand() * (R - L - 20);
+    const py = 819 + rand() * 2;
+    c.strokeStyle = alpha(MOSS, 0.28 + rand() * 0.18);
     c.lineWidth = 0.8;
-    for (let k = 0; k < 4; k += 1) {
+    for (let k = 0; k < 3; k += 1) {
       c.beginPath();
       c.moveTo(px, py);
-      c.lineTo(px + (k - 1.5) * 4, py - 6 - rand() * 8);
+      c.lineTo(px + (k - 1) * 3, py - 5 - rand() * 7);
       c.stroke();
     }
-  }
-  for (let i = 0; i < 70; i += 1) {
-    c.fillStyle = alpha(INK, 0.06 + rand() * 0.12);
-    c.beginPath();
-    c.arc(-400 + rand() * 1800, 820 + rand() * 16, 0.5 + rand() * 1.8, 0, TAU);
-    c.fill();
   }
 }
 
@@ -610,12 +460,12 @@ function drawBirds(g, ctx) {
 function drawTrailMarks(g, ctx) {
   const c = g.drawingContext;
   const rand = rngFor(630);
-  const scroll = (ctx.t * 190) % 2100;
+  const scroll = (ctx.t * 190) % 380;
   c.save();
   // Stone slabs move under the wheels, keeping the trail alive.
-  for (let i = 0; i < 34; i += 1) {
-    const x = -700 + (((i * 83 - scroll) % 2100) + 2100) % 2100;
-    const y = 823 + rand() * 22;
+  for (let i = 0; i < 10; i += 1) {
+    const x = 320 + (((i * 41 - scroll) % 380) + 380) % 380;
+    const y = 822 + rand() * 6;
     const w = 20 + rand() * 34;
     c.fillStyle = alpha(rand() > 0.5 ? '#d8d1bd' : '#c6c0ad', 0.18 + rand() * 0.2);
     c.beginPath();
@@ -661,6 +511,19 @@ function drawSongRider(g, ctx) {
   style.weight = 0.92;
   style.farAlpha = 0.4;
   const pose = rigPose(ctx.t);
+  // Pale dust under the wheels against the dark ledge.
+  const c = g.drawingContext;
+  c.save();
+  c.translate(468, 822);
+  c.scale(1, 0.1);
+  const under = c.createRadialGradient(0, 0, 4, 0, 0, 90);
+  under.addColorStop(0, 'rgba(235, 228, 210, 0.32)');
+  under.addColorStop(1, 'rgba(235, 228, 210, 0)');
+  c.fillStyle = under;
+  c.beginPath();
+  c.arc(0, 0, 90, 0, TAU);
+  c.fill();
+  c.restore();
   drawRig(g, pose, style, {
     x: 468,
     y: 820,

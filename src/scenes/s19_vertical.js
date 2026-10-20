@@ -3,7 +3,6 @@
 // Drawn in screen space so the phone frame never zooms with the camera.
 
 import { basePalette } from './_placeholder.js';
-import { alpha } from '../kit/color.js';
 import { rngFor, TAU, clamp } from '../kit/math.js';
 import { rigPose } from '../rig/pose.js';
 import { drawRig, neutralStyle } from '../rig/draw.js';
