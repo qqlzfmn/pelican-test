@@ -206,14 +206,42 @@ one stone edge in mist, colophon — not a literal reconstruction of
 are public domain; game, software and app UIs are fictional, and no protected
 characters, logos or footage are used.
 
-## Licensing
+## References and licenses
 
-- p5.js 2.3.4 is LGPL-2.1; the minified build and its license are vendored in
-  `public/vendor/`. See `THIRD_PARTY_NOTICES.md`.
-- p5.brush 2.2.3 is MIT. It was evaluated for the ink eras but is not used yet:
-  it requires a WEBGL canvas, while the film uses one 2D canvas for deterministic
-  text and pixel work. We use a small seeded 2D brush kit instead.
-- No frames, video, audio, cover art, brief text or gag compositions from the
-  reference project are used. See `NOTICE.md`.
-- Historical artworks referenced are public domain. Software, game and app UIs
-  are fictional and original.
+The film was made from the brief below and the following references. The
+production method is shared; no frames, renderings, audio, cover art or code
+from the referenced projects are included here. The opening epigraph is quoted
+from the brief and is credited here and in the Bilibili description.
+
+| Reference | Author / date | License / terms | What was used |
+|---|---|---|---|
+| [Prompt / production brief](https://www.bilibili.com/opus/1261257433279365141) | 近步抱告_, 2026-10-20 | **No license stated** in the opus; text treated as all rights reserved. | The brief, constraints and the opening one-line epigraph. |
+| [meme67-art-history](https://github.com/Tunai-0511/meme67-art-history) | Tunai-0511 / Tunai_uwu | Code: **MIT** ([LICENSE](https://github.com/Tunai-0511/meme67-art-history/blob/main/LICENSE)). Film, frames and audio: **all rights reserved** ([LICENSE-MEDIA.md](https://github.com/Tunai-0511/meme67-art-history/blob/main/LICENSE-MEDIA.md)). | Method and creative reference only; no code, frames, audio or text used. |
+| [The-Pelican-Test](https://github.com/RoyceBella-commits/The-Pelican-Test) | Royce Bella | Code: **MIT** ([LICENSE](https://github.com/RoyceBella-commits/The-Pelican-Test/blob/main/LICENSE)). Film and media: **© 2026 Royce Bella, all rights reserved** (see the repository's licensing section). | The published open-source repository and earlier cut; reference for structure and verification. This local build is an independent re-render. |
+| [BV1pLnw6YEzq](https://www.bilibili.com/video/BV1pLnw6YEzq) | 近步抱告_, 2026-10-20 | **No license declared**; the Bilibili upload is all rights reserved by default. | Reference cut; no video, frames, audio or cover reused. |
+| [BV12tHt6VETQ](https://www.bilibili.com/video/BV12tHt6VETQ) | Tunai_uwu | **No license declared** in the video metadata; the repository media terms above apply to the project media. | The original *67* cut; reference only, no media reused. |
+| *Superman in Flight* | — | **No license or link provided** in the brief. | Inspiration named in the prompt; no assets used. |
+
+If no license is stated, the safe reading is **all rights reserved**. Anyone
+reusing the prompt text or the referenced videos should ask the original authors
+directly.
+
+### Third-party software
+
+- **p5.js 2.3.4** — LGPL-2.1; vendored in `public/vendor/` with its license. See
+  `THIRD_PARTY_NOTICES.md`.
+- **p5.brush 2.2.3** — MIT; evaluated for the ink eras but **not used** in this
+  build (the film uses one 2D canvas and a seeded 2D brush kit).
+- **Puppeteer 25.15.0** — Apache-2.0; development only for frame capture and
+  contact sheets.
+- **ffmpeg** — LGPL/GPL depending on the build; external encoder, not bundled.
+- **Fonts** — no font files are bundled; the render uses system fonts
+  (Songti SC, STSong, Helvetica Neue) with generic fallbacks.
+
+### Project license
+
+The published code repository (`The-Pelican-Test`) is **MIT**; the film itself
+(frames, rendered video, synthesized score, cover and stills) is
+**© 2026 Royce Bella, all rights reserved**. Historical artworks referenced are
+public domain; software, game and app UIs in the film are fictional, with no
+real logos, characters or protected footage.
