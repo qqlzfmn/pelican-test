@@ -51,7 +51,9 @@ export class Director {
         c.clip();
         this.drawPiece(g, next.kind, next.index, time, { title: false });
         c.restore();
-        drawFrameBorder(g, rect, k, '#c7a35c');
+        // 14→15: the shadow is electrified into phosphor green.
+        const accent = Math.abs(b - 89) < 1e-4 ? '#5cffb0' : '#c7a35c';
+        drawFrameBorder(g, rect, k, accent);
       }
     }
 
