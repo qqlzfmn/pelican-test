@@ -247,8 +247,8 @@ directly.
 
 ### Project license
 
-The published code repository (`The-Pelican-Test`) is **MIT**; the film itself
+The code in this repository is **MIT** (see [LICENSE](LICENSE)). The film itself
 (frames, rendered video, synthesized score, cover and stills) is
-**© 2026 Royce Bella, all rights reserved**. Historical artworks referenced are
+**© 2026 qqlzfmn, all rights reserved**. Historical artworks referenced are
 public domain; software, game and app UIs in the film are fictional, with no
 real logos, characters or protected footage.
