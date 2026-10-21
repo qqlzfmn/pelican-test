@@ -1,13 +1,13 @@
 # 《鹈鹕测试》 · PELICAN TEST
 
 A procedural short film: a pelican rides one continuous road through twenty art
-history eras. 120 BPM, 2:17, 1920×1080. Every frame is drawn by code — no external
-images, video, or audio.
+history eras. 120 BPM, 2:17, 1920×1080. Every frame is drawn by code and every
+sample is synthesized — no external images, video, or audio samples.
 
-**Status: phase 2.** The full edit, timing, camera, through-frame transition and
-export pipeline are working. Three eras are finished painters — Sahara rock art,
-Song landscape and vertical video. The other seventeen remain labelled
-colour-block placeholders, each with its era palette and title card.
+**Status: finished.** All twenty eras are painted, the 137 s score is synthesized,
+and the horizontal and vertical cuts are exported by the scripts below. Every
+frame and every sample is generated from code; there are no external images,
+videos, fonts beyond the system stack, or audio samples.
 
 ## Run it
 
@@ -32,11 +32,17 @@ node tools/sheet.mjs --start 0 --end 137 --count 20
 # 30 vs 60 fps comparison on a camera pan (writes out/fps-test/)
 node tools/fps-test.mjs --start 5 --seconds 2
 
-# all frames, four workers
-node tools/render.mjs --fps 60 --from 0 --to 8219 --workers 4
+# all frames
+node tools/render.mjs --fps 60 --from 0 --to 8219 --workers 6
 
-# encode
-FPS=60 CRF=18 bash tools/encode.sh
+# original score (137.0 s, 48 kHz stereo)
+node tools/score.mjs
+
+# horizontal film with score
+AUDIO=audio/score.wav FPS=60 CRF=18 bash tools/encode.sh
+
+# separate 1000x1000 vertical montage
+AUDIO=audio/score.wav bash tools/vertical.sh
 ```
 
 ## Timeline
@@ -77,8 +83,32 @@ One pedal revolution = two beats. The wheel and road share the same speed.
 | 20 | `s20_code` | 代码美学 · Code Aesthetic |
 
 Special transition: at the 14→15 crossing the Nosferatu wall shadow is
-"electrified" into the green phosphor outline of the oscilloscope. In phase 1 it
-uses the generic through-frame transition.
+"electrified" into the green phosphor outline of the oscilloscope. The aperture
+border is already green at that crossing, and scene 15 starts green.
+
+## Score
+
+`audio/score.wav` is a 137.0 s original cue written by `tools/score.mjs` — no
+samples, no library music. It is 48 kHz stereo, 120 BPM, peak −1.4 dBFS,
+−18.9 LUFS integrated. One two-note D–E motif is re-orchestrated for every era
+(bone flute and hand drum, harp and reed, stone chimes, guqin and pipa, xiao,
+ocarina and log drum, sitar and tabla, gamelan, shamisen, detuned strings, silent
+film piano and projector, CRT sine, four-channel chiptune, MIDI ringtone, tape
+jazz, pop, and a piano/synth resolve). Bicycle bell, chain, projector, coin,
+message and tape cues land on the gags; era changes land on the 5 + 6n bar grid.
+
+The generator is deterministic (seeded noise) and rewrites the same WAV from the
+same command. The measured spectrum shows a distinct timbre at every boundary.
+
+## Vertical cut
+
+`bash tools/vertical.sh` builds a separate `out/pelican_test_vertical.mp4`
+(1000×1000, 60.0 s). It selects eight eras whose rider and bottom-left title card
+survive a left-square crop — Sahara, Egypt, Han stone, Maya, Mughal,
+Wayang, Van Gogh and Nosferatu — with the intro and outro letterboxed full-frame.
+Each era is trimmed 0.25 s at both ends so the aperture transitions are excluded. It uses
+the matching slices of the score, not a separate mix. It is a montage, not part
+of the 137 s horizontal film.
 
 ## Architecture
 
@@ -89,9 +119,10 @@ src/beat/       BPM, bars, sections, strong-beat pulses, timecode
 src/rig/        parametric pelican + bicycle pose, plus a styleable painter
 src/scenes/     one file per era; render is a pure function of t and a view
 src/main/       director, camera, through-frame transition, intro, outro, boot
-tools/          static server, shot, contact sheet, parallel renderer, encoder
-briefs/         shared art direction + per-era briefs (phase 3)
-audio/          synthesized score (phase 4)
+tools/          static server, shot, contact sheet, renderer, encoder,
+                score generator, vertical montage
+briefs/         shared art direction + per-era briefs
+audio/          synthesized score and its generator
 ```
 
 Contract for a scene:
@@ -144,28 +175,36 @@ Measured on the M-series workstation, 1920×1080 PNG capture:
 
 60 fps is chosen. The road moves at 314 units/s (≈339 px/s at zoom 1), so a
 30 fps cut jumps ≈11 px per frame; 60 fps halves that to ≈5.6 px and keeps the
-push-in edges smooth. The full 8,220-frame export took 782.4 s (10.5 fps,
-95 ms/frame) with four workers and produced ≈21 GB of intermediate PNGs; 30 fps
-would halve both. Retro scenes still quantise their own animation to 8–12 Hz.
+push-in edges smooth. The final 8,220-frame export took 835.4 s (9.8 fps,
+102 ms/frame) with six workers and produced ≈28 GB of intermediate PNGs; 30 fps
+would roughly halve both. Retro scenes still quantise their own animation to
+8–12 Hz. The final CRF 18 encode took 150.9 s.
 
-## Phase 2 demo artifacts (local, gitignored)
+## Outputs (local, gitignored)
 
 | file | what |
 |---|---|
-| `out/pelican_test.mp4` | silent 137.0 s, 1920×1080, 60 fps, H.264, 51.4 MiB |
-| `out/phase2-sheet.png` | 8 checkpoints across the three finished eras + outro |
-| `out/scenes-sheet.png` | 23 checkpoints: intro + all 20 eras + outro wide/pushed |
+| `out/pelican_test.mp4` | 137.0 s horizontal film, 1920×1080, 60 fps, H.264 + AAC score |
+| `out/pelican_test_vertical.mp4` | separate 60.0 s montage, 1000×1000, H.264 + AAC |
+| `audio/score.wav` | 137.0 s original score, 48 kHz stereo, peak −1.4 dBFS |
 | `out/contact-sheet.png` | 20 evenly spaced frames across the film |
-| `out/stills/` | full-size stills: Sahara, Song wide/close, vertical video |
+| `out/scenes-sheet.png` | checkpoints across intro + all 20 eras + outro |
+| `out/score-spectrum.png`, `out/score-wave.png` | score analysis |
 | `out/fps-test/pan_30fps.mp4`, `pan_60fps.mp4` | the camera-pan comparison |
 
-MP4 SHA-256:
-`723a3c32d16175b4c4c39ac92ae0ac6dec3cd8c9c7967d7e0166e562f2658a79`.
-The encode took 106.5 s at CRF 18 / preset slow.
+SHA-256:
+
+```
+e1046b9c0cdba878ecf081f1fb7fa0a7a133f0ec1eef1272b3797226c80ec8e0  out/pelican_test.mp4
+cecbe708f04c60d90507bf5ce6dbb780f5e050e4dae97fa1fd397c551356c6db  out/pelican_test_vertical.mp4
+f913a065bc9a815af0accdb2b7671bd9331562b153df9aac92c217844fddab28  audio/score.wav
+```
 
 Song landscape is deliberately a **graphic ink interpretation** — layered cliff,
 one stone edge in mist, colophon — not a literal reconstruction of
-*溪山行旅图*. A brush-level fidelity pass remains optional.
+*溪山行旅图*. The other eras are likewise original pastiches: historical styles
+are public domain; game, software and app UIs are fictional, and no protected
+characters, logos or footage are used.
 
 ## Licensing
 
