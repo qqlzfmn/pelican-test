@@ -9,6 +9,13 @@ and the horizontal and vertical cuts are exported by the scripts below. Every
 frame and every sample is generated from code; there are no external images,
 videos, fonts beyond the system stack, or audio samples.
 
+## Model attribution
+
+This build was produced with **DeepSeek V4.1 Flash 1017**
+(`deepseek-v4.1-flash-1017`). It is not a Claude/Opus build. The referenced
+`BV1pLnw6YEzq` cut is a separate, earlier version and is listed only as a
+reference below.
+
 ## Run it
 
 ```bash
@@ -215,10 +222,10 @@ from the brief and is credited here and in the Bilibili description.
 
 | Reference | Author / date | License / terms | What was used |
 |---|---|---|---|
-| [Prompt / production brief](https://www.bilibili.com/opus/1261257433279365141) | 近步抱告_, 2026-10-20 | **No license stated** in the opus; text treated as all rights reserved. | The brief, constraints and the opening one-line epigraph. |
+| [Prompt / production brief](https://www.bilibili.com/opus/1261257433279365141) | 近步抱告_, 2026-10-20 | **No license stated** in the Bilibili post; text treated as all rights reserved. | The brief, constraints and the opening one-line epigraph. |
 | [meme67-art-history](https://github.com/Tunai-0511/meme67-art-history) | Tunai-0511 / Tunai_uwu | Code: **MIT** ([LICENSE](https://github.com/Tunai-0511/meme67-art-history/blob/main/LICENSE)). Film, frames and audio: **all rights reserved** ([LICENSE-MEDIA.md](https://github.com/Tunai-0511/meme67-art-history/blob/main/LICENSE-MEDIA.md)). | Method and creative reference only; no code, frames, audio or text used. |
 | [The-Pelican-Test](https://github.com/RoyceBella-commits/The-Pelican-Test) | Royce Bella | Code: **MIT** ([LICENSE](https://github.com/RoyceBella-commits/The-Pelican-Test/blob/main/LICENSE)). Film and media: **© 2026 Royce Bella, all rights reserved** (see the repository's licensing section). | The published open-source repository and earlier cut; reference for structure and verification. This local build is an independent re-render. |
-| [BV1pLnw6YEzq](https://www.bilibili.com/video/BV1pLnw6YEzq) | 近步抱告_, 2026-10-20 | **No license declared**; the Bilibili upload is all rights reserved by default. | Reference cut; no video, frames, audio or cover reused. |
+| [BV1pLnw6YEzq](https://www.bilibili.com/video/BV1pLnw6YEzq) | 近步抱告_, 2026-10-20 | **No license declared**; the Bilibili upload is all rights reserved by default. | Earlier reference cut made with Opus5.5; no video, frames, audio or cover reused. This film is a separate DeepSeek build. |
 | [BV12tHt6VETQ](https://www.bilibili.com/video/BV12tHt6VETQ) | Tunai_uwu | **No license declared** in the video metadata; the repository media terms above apply to the project media. | The original *67* cut; reference only, no media reused. |
 | *Superman in Flight* | — | **No license or link provided** in the brief. | Inspiration named in the prompt; no assets used. |
 
